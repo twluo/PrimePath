@@ -4,34 +4,39 @@ import time
 
 __author__ = "twluo@ucsd.edu, A98063711, elc036@ucsd.edu, A10842526, r1chin@ucsd.edu, A10653551"
 
+#Prime Tests inspired by
+#https://pythonism.wordpress.com/2008/05/04/looking-at-prime-numbers-in-python/
+
 class PrimeClass(object):
-	def __init__(self, target):
-		self.target = str(target)
-		n = int(''.join(['9' for __ in self.target]))
-		self.primeList = self.generatePrimes(n)
+	def __init__(self):
+		pass
 
-	def padLeftZero(self, x, y):
-		diff = len(x) - len(y)
-		if diff == 0:
-			return (x, y)
-		elif diff < 0:
-			return (x.zfill(len(y)), y)
-		else:
-			return (x, y.zfill(len(x)))
+	def primalityTest(self, number):
+		number = float(number)
+		if number != 2.0 and number % 2 == 0:
+			return False
+		if number != 3.0 and number % 3 == 0:
+			return False
+		for j in range(1, int((number**0.5 + 1)/6.0 + 1)):
+			if number % (6*j - 1) == 0:
+				return False
+			if number % (6*j + 1) == 0:
+				return False
+		return True
 
-	def generatePrimes(self, n):
-		a = list(range(2, n))
-		for x in a:
-		  comp = []
-		  for y in range(a.index(x),len(a)):
-		    q = x * a[y]
-		    if q <= max(a):
-		      comp.append(q)
-		    else:
-		      break
-		  for z in comp:
-		    a.remove(z)	
-		return [self.padLeftZero(str(i), self.target)[0] for i in a]
+	def oneOff (self, number):
+		toreturn = []
+		for idx, c in enumerate(str(number)):
+			num = list(str(number))
+			for n in range(10):
+				change = str(n)
+				if change == c:
+					continue
+				num[idx] = change
+				totest = ''.join(num)
+				if self.primalityTest(totest) and len(num) == len(str(int(totest))):
+					toreturn.append(int(totest))
+		return toreturn
 
 	def hammingDistance(self, x, y):
 		numDiffs = 0
@@ -41,11 +46,7 @@ class PrimeClass(object):
 		return numDiffs
 
 	def getPossibleActions(self, currentPrime):
-		possibleActions = []
-		for i in self.primeList:
-			if self.hammingDistance(currentPrime, i) == 1:
-				possibleActions.append(i)
-		return possibleActions
+		return self.oneOff(currentPrime)
 
 	def printPath(self, parentList, startingPrime, finalPrime):
 		path = [finalPrime]
@@ -80,14 +81,15 @@ def main():
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
-		pc = PrimeClass(primes[0])
-		print(pc.getPath(primes[0], primes[1]))
+		pc = PrimeClass()
+		print(pc.getPath(int(primes[0]), int(primes[1])))
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
 		h, m = divmod(m, 60)
 		print ("%d:%02d:%02d" % (h, m, s))
 		print (total, 'ms')
+		print()
 
 if __name__ == '__main__':
 	main()
