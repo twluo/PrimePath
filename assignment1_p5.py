@@ -1,6 +1,7 @@
 from itertools import zip_longest
 import fileinput
 import time
+import queue
 
 __author__ = "twluo@ucsd.edu, A98063711, elc036@ucsd.edu, A10842526, r1chin@ucsd.edu, A10653551"
 
@@ -13,6 +14,8 @@ class PrimeClass(object):
 
 	def primalityTest(self, number):
 		number = float(number)
+		if number == 1.0 or number == 0.0:
+			return False
 		if number != 2.0 and number % 2 == 0:
 			return False
 		if number != 3.0 and number % 3 == 0:
@@ -60,19 +63,22 @@ class PrimeClass(object):
 	def getPath(self, startingPrime, finalPrime):
 		visited = set()
 		parentList = {}
-		queue = []
-		queue.append((startingPrime, 0))
-		while queue:
-			currentPrime, currentCost = queue.pop(0)
+		q = queue.PriorityQueue()
+		q.put((0, startingPrime))
+		while not q.empty():
+			currentCost, currentPrime = q.get()
 			currentCost = currentCost + 1
 			visited.add(currentPrime)
 			if currentPrime == finalPrime:
 				return self.printPath(parentList, startingPrime, finalPrime)
 			for child in self.getPossibleActions(currentPrime):
-				if child not in parentList or parentList[child][1] >= currentCost:
+				currentCost = currentCost + self.hammingDistance(str(currentPrime), str(child))
+				if child not in parentList:
+					parentList[child] = (currentPrime, currentCost)
+				elif parentList[child][1] >= currentCost:
 					parentList[child] = (currentPrime, currentCost)
 				if child not in visited:
-					queue.append((child, currentCost)) 
+					q.put((currentCost, child)) 
 		return "UNSOLVABLE"
 
 def main():
@@ -91,5 +97,7 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	#pc = PrimeClass()
+	#print(pc.getPath(7, 13))
 
 
