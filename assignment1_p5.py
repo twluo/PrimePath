@@ -62,28 +62,25 @@ class PrimeClass(object):
 
 
 	def getPath(self, startingPrime, finalPrime):
-		visited = set()
 		parentList = {}
 		q = queue.PriorityQueue()
 		q.put((0, startingPrime))
 		while not q.empty():
 			currentCost, currentPrime = q.get()
+			#print(currentCost, currentPrime)
 			currentCost = currentCost + 1
-			visited.add(currentPrime)
 			if currentPrime == finalPrime:
 				return self.printPath(parentList, startingPrime, finalPrime)
 			for child in self.getPossibleActions(currentPrime):
-				currentCost = currentCost + self.hammingDistance(str(finalPrime), str(child))
-				if child not in parentList:
-					parentList[child] = (currentPrime, currentCost)
-				elif parentList[child][1] >= currentCost:
-					parentList[child] = (currentPrime, currentCost)
-				if child not in visited:
-					q.put((currentCost, child)) 
+				newCost = currentCost + self.hammingDistance(str(finalPrime), str(child))
+				#print (currentCost, self.hammingDistance(str(finalPrime), str(child)), newCost, child)
+				if child not in parentList or parentList[child][1] >= newCost:
+					parentList[child] = (currentPrime, newCost)
+					q.put((newCost, child))
 		return "UNSOLVABLE"
 
 def main():
-	wf = open("p5_output.txt", 'w')
+	wf = open("test_output.txt", 'w')
 	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()
@@ -103,6 +100,6 @@ def main():
 if __name__ == '__main__':
 	main()
 	#pc = PrimeClass()
-	#print(pc.getPath(7, 13))
+	#print(pc.getPath(7, 3))
 
 
