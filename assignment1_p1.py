@@ -1,6 +1,7 @@
 from itertools import zip_longest
 import fileinput
 import time
+import queue
 
 __author__ = "twluo@ucsd.edu, A98063711, elc036@ucsd.edu, A10842526, r1chin@ucsd.edu, A10653551"
 
@@ -34,11 +35,14 @@ class PrimeClass(object):
 					continue
 				num[idx] = change
 				totest = ''.join(num)
-				if self.primalityTest(totest) and len(num) == len(str(int(totest))):
-					toreturn.append(int(totest))
+				if len(num) == len(str(int(totest))):
+					if self.primalityTest(totest):
+						toreturn.append(int(totest))
 		return toreturn
 
 	def hammingDistance(self, x, y):
+		if len(x) != len(y):
+			return 
 		numDiffs = 0
 		for i, j in zip_longest(x, y):
 			if i != j:
@@ -46,50 +50,50 @@ class PrimeClass(object):
 		return numDiffs
 
 	def getPossibleActions(self, currentPrime):
-		return self.oneOff(currentPrime)
+			return self.oneOff(currentPrime)
 
 	def printPath(self, parentList, startingPrime, finalPrime):
 		path = [finalPrime]
-		while parentList[path[-1]][0] != startingPrime:
-			path.append(parentList[path[-1]][0])
+		while parentList[path[-1]] != startingPrime:
+			path.append(parentList[path[-1]])
 		path.append(startingPrime)
 		path.reverse()
 		return path
 
 
 	def getPath(self, startingPrime, finalPrime):
-		visited = set()
 		parentList = {}
-		queue = []
-		queue.append((startingPrime, 0))
-		while queue:
-			currentPrime, currentCost = queue.pop(0)
-			currentCost = currentCost + 1
-			visited.add(currentPrime)
+		q = queue.Queue()
+		q.put(startingPrime)
+		while not q.empty():
+			currentPrime = q.get()
 			if currentPrime == finalPrime:
 				return self.printPath(parentList, startingPrime, finalPrime)
 			for child in self.getPossibleActions(currentPrime):
-				if child not in parentList or parentList[child][1] >= currentCost:
-					parentList[child] = (currentPrime, currentCost)
-				if child not in visited:
-					queue.append((child, currentCost)) 
+				if child not in parentList:
+					parentList[child] = currentPrime
+					q.put(child) 
 		return "UNSOLVABLE"
 
 def main():
+	wf = open("test_output.txt", 'w')
+	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
+		print("Running " + primes[0] + " " + primes[1])
+		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		print(pc.getPath(int(primes[0]), int(primes[1])))
+		wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
 		h, m = divmod(m, 60)
-		print ("%d:%02d:%02d" % (h, m, s))
-		print (total, 'ms')
-		print()
+		wf.write ("%d:%02d:%02d\n" % (h, m, s))
+		wf.write (str(total) + "s\n")
+		wf.write("\n")
 
 if __name__ == '__main__':
 	main()
-
-
+	#pc = PrimeClass(3, 1)
+	#print(pc.generatePrimes(1))

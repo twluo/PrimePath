@@ -34,8 +34,9 @@ class PrimeClass(object):
 					continue
 				num[idx] = change
 				totest = ''.join(num)
-				if self.primalityTest(totest) and len(num) == len(str(int(totest))):
-					toreturn.append(int(totest))
+				if len(num) == len(str(int(totest))):
+					if self.primalityTest(totest):
+						toreturn.append(int(totest))
 		return toreturn
 
 	def hammingDistance(self, x, y):
@@ -76,18 +77,22 @@ class PrimeClass(object):
 		return "UNSOLVABLE"
 
 def main():
+	wf = open("p2_output.txt", 'w')
+	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
+		print("Running " + primes[0] + " " + primes[1])
+		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		print(pc.getPath(int(primes[0]), int(primes[1])))
+		wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
 		h, m = divmod(m, 60)
-		print ("%d:%02d:%02d" % (h, m, s))
-		print (total, 'ms')
-		print()
+		wf.write ("%d:%02d:%02d\n" % (h, m, s))
+		wf.write (str(total) + "s\n")
+		wf.write("\n")
 
 if __name__ == '__main__':
 	main()
