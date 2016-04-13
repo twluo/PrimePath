@@ -87,7 +87,7 @@ class PrimeClass(object):
                         backwardList[childBackward] = currentPrimeBackward
                         qj.put(childBackward)
                     #Resolve Dup???
-        return 'UNSOLVABLE'
+        return 'UNSOLVABLE', ''
 
     def printPathBiDi(self, forwardList, backwardList, cp, startingPrime, finalPrime):
         forwardpath = [cp]
@@ -101,11 +101,9 @@ class PrimeClass(object):
             backwardpath.append(finalPrime)
         forwardpath.append(startingPrime)
         forwardpath.reverse()
-        #print (forwardpath)
-        #print (backwardpath)
-        backwardpath = backwardpath[1:]
+        backwardpath.reverse()
         #print (forwardpath + backwardpath)
-        return forwardpath + backwardpath
+        return forwardpath, backwardpath
 
 def main():
     wf = open("p4_output.txt", 'w')
@@ -116,7 +114,8 @@ def main():
         print("Running " + primes[0] + " " + primes[1])
         wf.write("Running " + primes[0] + " " + primes[1] + "\n")
         pc = PrimeClass()
-        wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
+        fpath, bpath = pc.getPath(int(primes[0]), int(primes[1]))
+        wf.write(str(fpath) + "\n" + str(bpath) + ("\n" if (bpath != '') else bpath))
         end = time.clock()
         total = end - start
         m, s = divmod(total, 60)
