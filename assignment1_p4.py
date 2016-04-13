@@ -95,15 +95,21 @@ class PrimeClass(object):
         while forwardList[forwardpath[-1]] != startingPrime:
             forwardpath.append(forwardList[forwardpath[-1]])
         while backwardList[backwardpath[-1]] != finalPrime:
-            forwardpath.append(backwardList[backwardpath[-1]])
+            backwardpath.append(backwardList[backwardpath[-1]])
         forwardpath.append(startingPrime)
         forwardpath.reverse()
-        return forwardpath + backwardpath[1:]
+        print (forwardpath)
+        print (backwardpath)
+
+        if len(backwardpath) > 1:
+            backwardpath = backwardpath[1:]
+        print (forwardpath + backwardpath)
+        return forwardpath + backwardpath
 
 def main():
     wf = open("p4_output.txt", 'w')
     wf.truncate()
-    primes = ('103', '269')
+    primes = ('1000003', '1676267')
     print("Running " + primes[0] + " " + primes[1])
     wf.write("Running " + primes[0] + " " + primes[1] + "\n")
     pc = PrimeClass()
