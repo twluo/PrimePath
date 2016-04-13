@@ -94,8 +94,9 @@ class PrimeClass(object):
         backwardpath = [cp]
         while forwardList[forwardpath[-1]] != startingPrime:
             forwardpath.append(forwardList[forwardpath[-1]])
-        while backwardList[backwardpath[-1]] != finalPrime:
-            backwardpath.append(backwardList[backwardpath[-1]])
+        if backwardList:
+            while backwardList[backwardpath[-1]] != finalPrime:
+                backwardpath.append(backwardList[backwardpath[-1]])
         forwardpath.append(startingPrime)
         forwardpath.reverse()
         print (forwardpath)
@@ -109,19 +110,20 @@ class PrimeClass(object):
 def main():
     wf = open("p4_output.txt", 'w')
     wf.truncate()
-    primes = ('1000003', '1676267')
-    print("Running " + primes[0] + " " + primes[1])
-    wf.write("Running " + primes[0] + " " + primes[1] + "\n")
-    pc = PrimeClass()
-    start = time.clock()
-    wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
-    end = time.clock()
-    total = end - start
-    m, s = divmod(total, 60)
-    h, m = divmod(m, 60)
-    wf.write ("%d:%02d:%02d\n" % (h, m, s))
-    wf.write (str(total) + "s\n")
-    wf.write("\n")
+    for line in fileinput.input():
+        primes = line.split()
+        start = time.clock()
+        print("Running " + primes[0] + " " + primes[1])
+        wf.write("Running " + primes[0] + " " + primes[1] + "\n")
+        pc = PrimeClass()
+        wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
+        end = time.clock()
+        total = end - start
+        m, s = divmod(total, 60)
+        h, m = divmod(m, 60)
+        wf.write ("%d:%02d:%02d\n" % (h, m, s))
+        wf.write (str(total) + "s\n")
+        wf.write("\n")
 
 if __name__ == '__main__':
     main()
