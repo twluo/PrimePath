@@ -76,7 +76,7 @@ class PrimeClass(object):
 		return "UNSOLVABLE"
 
 def main():
-	wf = open("test_output.txt", 'w')
+	wf = open("p1_output.txt", 'w')
 	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()

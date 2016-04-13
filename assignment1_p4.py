@@ -96,15 +96,15 @@ class PrimeClass(object):
             forwardpath.append(forwardList[forwardpath[-1]])
         if backwardList:
             while backwardList[backwardpath[-1]] != finalPrime:
+                #print(backwardpath[-1], backwardList[backwardpath[-1]])
                 backwardpath.append(backwardList[backwardpath[-1]])
+            backwardpath.append(finalPrime)
         forwardpath.append(startingPrime)
         forwardpath.reverse()
-        print (forwardpath)
-        print (backwardpath)
-
-        if len(backwardpath) > 1:
-            backwardpath = backwardpath[1:]
-        print (forwardpath + backwardpath)
+        #print (forwardpath)
+        #print (backwardpath)
+        backwardpath = backwardpath[1:]
+        #print (forwardpath + backwardpath)
         return forwardpath + backwardpath
 
 def main():
