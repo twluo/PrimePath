@@ -1,3 +1,4 @@
+import math
 import fileinput
 import time
 
@@ -72,6 +73,12 @@ class PrimeClass(object):
 				pathSoFar.pop()
 
 	def getPath(self, startingPrime, finalPrime):
+		if startingPrime == finalPrime:
+			return str(startingPrime)
+		if not self.primalityTest(startingPrime):
+			return "UNSOLVABLE"
+		if int(math.log10(startingPrime)) != int(math.log10(finalPrime)):
+			return "UNSOLVABLE"
 		path = self.stepIn(startingPrime, [startingPrime], finalPrime)
 		if path is not None:
 			return path
@@ -94,9 +101,9 @@ def main():
 		start = time.clock()
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
+		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1])))
 		print(output)
-		wf.write(output)
+		wf.write(output + "\n")
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)

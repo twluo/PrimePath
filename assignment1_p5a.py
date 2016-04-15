@@ -1,5 +1,7 @@
 import fileinput
 import time
+import sys
+import math
 try:
     import Queue as queue  # ver. < 3.0
 except ImportError:
@@ -46,7 +48,7 @@ class PrimeClass(object):
 
 	def hammingDistance(self, x, y):
 		if len(x) != len(y):
-			return 
+			return sys.maxsize
 		numDiffs = 0
 		for i, j in zip(x, y):
 			if i != j:
@@ -68,6 +70,10 @@ class PrimeClass(object):
 	def getPath(self, startingPrime, finalPrime):
 		if startingPrime == finalPrime:
 			return str(startingPrime)
+		if not self.primalityTest(startingPrime):
+			return "UNSOLVABLE"
+		if int(math.log10(startingPrime)) != int(math.log10(finalPrime)):
+			return "UNSOLVABLE"
 		parentList = {}
 		q = queue.PriorityQueue()
 		q.put((0, startingPrime))
@@ -84,7 +90,7 @@ class PrimeClass(object):
 					parentList[child] = (currentPrime, newCost)
 					q.put((newCost, child))
 		return "UNSOLVABLE"
-		
+
 	def pathToStr(self, list):
 		if type(list) == str:
 			return list
@@ -102,9 +108,9 @@ def main():
 		start = time.clock()
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
+		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1])))
 		print(output)
-		wf.write(output)
+		wf.write(output + "\n")
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)

@@ -1,3 +1,4 @@
+import math
 import fileinput
 import time
 try:
@@ -66,6 +67,10 @@ class PrimeClass(object):
 	def getPath(self, startingPrime, finalPrime):
 		if startingPrime == finalPrime:
 			return str(startingPrime)
+		if not self.primalityTest(startingPrime):
+			return "UNSOLVABLE"
+		if int(math.log10(startingPrime)) != int(math.log10(finalPrime)):
+			return "UNSOLVABLE"
 		parentList = {}
 		q = queue.Queue()
 		q.put(startingPrime)
@@ -94,12 +99,12 @@ def main():
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
-		print("Running " + primes[0] + " " + primes[1] + "\n")
+		#print("Running " + primes[0] + " " + primes[1] + "\n")
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
+		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1])))
 		print(output)
-		wf.write(output)
+		wf.write(output + "\n")
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
@@ -109,6 +114,6 @@ def main():
 		wf.write("\n")
 
 if __name__ == '__main__':
-	#main()
-	pc = PrimeClass()
-	print(pc.getPath(3,3))
+	main()
+	#pc = PrimeClass()
+	#rint(pc.getPath(3,3))
