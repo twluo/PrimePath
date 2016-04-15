@@ -67,10 +67,6 @@ class PrimeClass(object):
 	def getPath(self, startingPrime, finalPrime):
 		if startingPrime == finalPrime:
 			return str(startingPrime)
-		if not self.primalityTest(startingPrime):
-			return "UNSOLVABLE"
-		if int(math.log10(startingPrime)) != int(math.log10(finalPrime)):
-			return "UNSOLVABLE"
 		parentList = {}
 		q = queue.Queue()
 		q.put(startingPrime)

@@ -2,6 +2,7 @@ import fileinput
 import time
 import sys
 import math
+import random
 try:
     import Queue as queue  # ver. < 3.0
 except ImportError:
@@ -46,14 +47,14 @@ class PrimeClass(object):
 						toreturn.append(int(totest))
 		return toreturn
 
-	def hammingDistance(self, x, y):
+	def heuristic(self, x, y):
 		if len(x) != len(y):
 			return sys.maxsize
 		numDiffs = 0
 		for i, j in zip(x, y):
 			if i != j:
 				numDiffs += 1
-		return numDiffs
+		return numDiffs + abs(int(x) - int(y))
 
 	def getPossibleActions(self, currentPrime):
 		return self.oneOff(currentPrime)
@@ -84,7 +85,7 @@ class PrimeClass(object):
 			if currentPrime == finalPrime:
 				return self.printPath(parentList, startingPrime, finalPrime)
 			for child in self.getPossibleActions(currentPrime):
-				newCost = currentCost + self.hammingDistance(str(finalPrime), str(child))
+				newCost = currentCost + self.heuristic(str(finalPrime), str(child))
 				#print (currentCost, self.hammingDistance(str(finalPrime), str(child)), newCost, child)
 				if child not in parentList or parentList[child][1] >= newCost:
 					parentList[child] = (currentPrime, newCost)

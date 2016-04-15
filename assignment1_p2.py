@@ -77,8 +77,6 @@ class PrimeClass(object):
 			return str(startingPrime)
 		if not self.primalityTest(startingPrime):
 			return "UNSOLVABLE"
-		if int(math.log10(startingPrime)) != int(math.log10(finalPrime)):
-			return "UNSOLVABLE"
 		path = self.stepIn(startingPrime, [startingPrime], finalPrime)
 		if path is not None:
 			return path
