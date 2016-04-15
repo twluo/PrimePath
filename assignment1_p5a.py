@@ -66,6 +66,8 @@ class PrimeClass(object):
 
 
 	def getPath(self, startingPrime, finalPrime):
+		if startingPrime == finalPrime:
+			return str(startingPrime)
 		parentList = {}
 		q = queue.PriorityQueue()
 		q.put((0, startingPrime))

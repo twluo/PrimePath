@@ -64,6 +64,8 @@ class PrimeClass(object):
 
 
     def getPath(self, startingPrime, finalPrime):
+        if startingPrime == finalPrime:
+            return str(startingPrime)
         forwardList = {}
         backwardList = {}
         qi = queue.Queue()

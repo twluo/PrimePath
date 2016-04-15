@@ -85,7 +85,7 @@ class PrimeClass(object):
 			acc += str(x) + " "
 		acc = acc[:-1]
 		return acc
-		
+
 def main():
 	wf = open("p2_output.txt", 'w')
 	wf.truncate()
@@ -107,4 +107,6 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	#pc = PrimeClass()
+	#print(pc.getPath(3,3))
 

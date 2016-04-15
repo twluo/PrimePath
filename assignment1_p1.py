@@ -64,6 +64,8 @@ class PrimeClass(object):
 
 
 	def getPath(self, startingPrime, finalPrime):
+		if startingPrime == finalPrime:
+			return str(startingPrime)
 		parentList = {}
 		q = queue.Queue()
 		q.put(startingPrime)
@@ -107,6 +109,6 @@ def main():
 		wf.write("\n")
 
 if __name__ == '__main__':
-	main()
-	#pc = PrimeClass(3, 1)
-	#print(pc.generatePrimes(1))
+	#main()
+	pc = PrimeClass()
+	print(pc.getPath(3,3))
