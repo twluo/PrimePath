@@ -1,6 +1,9 @@
 import fileinput
 import time
-import queue
+try:
+    import Queue as queue  # ver. < 3.0
+except ImportError:
+    import queue as queue
 
 __author__ = "twluo@ucsd.edu, A98063711, elc036@ucsd.edu, A10842526, r1chin@ucsd.edu, A10653551"
 
