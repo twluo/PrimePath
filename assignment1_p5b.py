@@ -80,7 +80,7 @@ class PrimeClass(object):
 					parentList[child] = (currentPrime, newCost)
 					q.put((newCost, child))
 		return "UNSOLVABLE"	
-		
+
 	def pathToStr(self, list):
 		if type(list) == str:
 			return list
@@ -97,6 +97,7 @@ def main():
 		primes = line.split()
 		start = time.clock()
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
+		print("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
 		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
 		print(output)
