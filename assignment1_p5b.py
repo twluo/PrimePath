@@ -1,5 +1,6 @@
 import fileinput
 import time
+import queue
 
 __author__ = "twluo@ucsd.edu, A98063711, elc036@ucsd.edu, A10842526, r1chin@ucsd.edu, A10653551"
 
@@ -12,6 +13,8 @@ class PrimeClass(object):
 
 	def primalityTest(self, number):
 		number = float(number)
+		if number == 1.0 or number == 0.0:
+			return False
 		if number != 2.0 and number % 2 == 0:
 			return False
 		if number != 3.0 and number % 3 == 0:
@@ -38,7 +41,7 @@ class PrimeClass(object):
 						toreturn.append(int(totest))
 		return toreturn
 
-	def hammingDistance(self, x, y):
+	def alternateHammingDistance(self, x, y):
 		if len(x) != len(y):
 			return 
 		numDiffs = 0
@@ -58,26 +61,23 @@ class PrimeClass(object):
 		path.reverse()
 		return path
 
-	def stepIn(self, currentPrime, pathSoFar, targetPrime, maxDepth):
-		if currentPrime == targetPrime:
-			return pathSoFar
-		if len(pathSoFar) > maxDepth:
-			return
-		for child in self.getPossibleActions(currentPrime):
-			if child not in pathSoFar:
-				pathSoFar.append(child)
-				path = self.stepIn(child, pathSoFar, targetPrime, maxDepth)
-				if path is not None:
-					return path
-				pathSoFar.pop()
 
 	def getPath(self, startingPrime, finalPrime):
-		for maxDepth in range (0,8):
-			path = self.stepIn(startingPrime, [startingPrime], finalPrime, maxDepth)
-			if path is not None:
-				return path
-		return "UNSOLVABLE"
-
+		parentList = {}
+		q = queue.PriorityQueue()
+		q.put((0, startingPrime))
+		while not q.empty():
+			currentCost, currentPrime = q.get()
+			currentCost = currentCost + 1
+			if currentPrime == finalPrime:
+				return self.printPath(parentList, startingPrime, finalPrime)
+			for child in self.getPossibleActions(currentPrime):
+				newCost = currentCost + self.alternateHammingDistance(str(finalPrime), str(child))
+				if child not in parentList or parentList[child][1] >= newCost:
+					parentList[child] = (currentPrime, newCost)
+					q.put((newCost, child))
+		return "UNSOLVABLE"	
+		
 	def pathToStr(self, list):
 		if type(list) == str:
 			return list
@@ -86,9 +86,9 @@ class PrimeClass(object):
 			acc += str(x) + " "
 		acc = acc[:-1]
 		return acc
-		
+
 def main():
-	wf = open("p3_output.txt", 'w')
+	wf = open("p5b_output.txt", 'w')
 	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()
@@ -97,8 +97,7 @@ def main():
 		pc = PrimeClass()
 		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
 		print(output)
-		wf.write(output)
-		end = time.clock()
+		wf.write(output)		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
 		h, m = divmod(m, 60)
@@ -108,4 +107,7 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	#pc = PrimeClass()
+	#print(pc.getPath(7, 3))
+
 

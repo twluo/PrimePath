@@ -1,4 +1,3 @@
-from itertools import zip_longest
 import fileinput
 import time
 import queue
@@ -105,17 +104,27 @@ class PrimeClass(object):
         #print (forwardpath + backwardpath)
         return forwardpath, backwardpath
 
+    def pathToStr(self, list):
+        if type(list) == str:
+            return list
+        acc = ""
+        for x in list:
+            acc += str(x) + " "
+        acc = acc[:-1]
+        return acc
+
 def main():
     wf = open("p4_output.txt", 'w')
     wf.truncate()
     for line in fileinput.input():
         primes = line.split()
         start = time.clock()
-        print("Running " + primes[0] + " " + primes[1])
         wf.write("Running " + primes[0] + " " + primes[1] + "\n")
         pc = PrimeClass()
         fpath, bpath = pc.getPath(int(primes[0]), int(primes[1]))
-        wf.write(str(fpath) + "\n" + str(bpath) + ("\n" if (bpath != '') else bpath))
+        output = (pc.pathToStr(fpath) + "\n" + pc.pathToStr(bpath) + ("\n" if (bpath != '') else bpath))
+        print(output)
+        wf.write(output)
         end = time.clock()
         total = end - start
         m, s = divmod(total, 60)

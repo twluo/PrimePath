@@ -1,4 +1,3 @@
-from itertools import zip_longest
 import fileinput
 import time
 
@@ -40,8 +39,10 @@ class PrimeClass(object):
 		return toreturn
 
 	def hammingDistance(self, x, y):
+		if len(x) != len(y):
+			return 
 		numDiffs = 0
-		for i, j in zip_longest(x, y):
+		for i, j in zip(x, y):
 			if i != j:
 				numDiffs += 1
 		return numDiffs
@@ -76,16 +77,26 @@ class PrimeClass(object):
 			return path
 		return "UNSOLVABLE"
 
+	def pathToStr(self, list):
+		if type(list) == str:
+			return list
+		acc = ""
+		for x in list:
+			acc += str(x) + " "
+		acc = acc[:-1]
+		return acc
+		
 def main():
 	wf = open("p2_output.txt", 'w')
 	wf.truncate()
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
-		print("Running " + primes[0] + " " + primes[1])
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
-		wf.write(str(pc.getPath(int(primes[0]), int(primes[1]))) + "\n")
+		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
+		print(output)
+		wf.write(output)
 		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
