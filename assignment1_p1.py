@@ -92,6 +92,7 @@ def main():
 	for line in fileinput.input():
 		primes = line.split()
 		start = time.clock()
+		print("Running " + primes[0] + " " + primes[1] + "\n")
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
 		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"

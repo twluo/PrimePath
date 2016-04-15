@@ -97,11 +97,11 @@ def main():
 		primes = line.split()
 		start = time.clock()
 		wf.write("Running " + primes[0] + " " + primes[1] + "\n")
-		print("Running " + primes[0] + " " + primes[1] + "\n")
 		pc = PrimeClass()
 		output = pc.pathToStr(pc.getPath(int(primes[0]), int(primes[1]))) + "\n"
 		print(output)
-		wf.write(output)		end = time.clock()
+		wf.write(output)		
+		end = time.clock()
 		total = end - start
 		m, s = divmod(total, 60)
 		h, m = divmod(m, 60)
